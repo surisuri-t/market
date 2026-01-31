@@ -5,6 +5,14 @@ export enum Difficulty {
   HARD = '어려움'
 }
 
+export enum Category {
+  GROCERY = '시장보기',
+  STATIONERY = '문구사기',
+  FRUIT = '과일사기',
+  ELECTRONICS = '가전제품',
+  CLOTHING = '옷사기'
+}
+
 export interface GameItem {
   id: string;
   name: string;

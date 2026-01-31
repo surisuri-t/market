@@ -1,5 +1,5 @@
 {
-  "name": "순서기억하기",
-  "description": "A specialized memory game designed for seniors (60s-70s) to improve cognitive health by memorizing scenes and filling in missing gaps.",
+  "name": "장보기게임",
+  "description": "어르신들을 위한 시장 장보기 기억력 게임. 물건들을 기억하고 장바구니에 순서대로 담아보세요.",
   "requestFramePermissions": []
 }
