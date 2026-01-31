@@ -10,7 +10,9 @@
     <style>
         body {
             font-family: 'Noto Sans KR', sans-serif;
-            background-color: #f0fdf4; /* Emerald 50 - Fresh Mart Feel */
+            background-color: #020617; /* Slate 950 */
+            color: #f8fafc;
+            overflow-x: hidden;
         }
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
@@ -20,8 +22,20 @@
             animation: fadeIn 0.2s ease-out forwards;
         }
         .mart-border {
-            border-top: 15px solid #065f46; /* Emerald 800 sign color */
-            border-bottom: 8px solid #e2e8f0;
+            border-top: 15px solid #065f46; /* Emerald 800 */
+            border-bottom: 8px solid #1e293b; /* Slate 800 */
+        }
+        /* Custom scrollbar for dark mode */
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #059669;
+            border-radius: 10px;
+            border: 3px solid #0f172a;
         }
     </style>
 <script type="importmap">

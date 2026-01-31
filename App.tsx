@@ -173,31 +173,31 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-4">
-      {/* API Key Modal - Vercel 배포 시 직접 입력 가능하도록 개선 */}
+    <div className="min-h-screen flex flex-col items-center justify-center p-4 transition-colors duration-500 bg-slate-950">
+      {/* API Key Modal - Dark Theme */}
       {showApiModal && (
-        <div className="fixed inset-0 bg-black/80 z-[100] flex items-center justify-center p-4 backdrop-blur-md animate-fadeIn">
-          <div className="bg-white rounded-[3.5rem] shadow-2xl max-w-lg w-full p-10 border-8 border-emerald-100 relative overflow-hidden">
+        <div className="fixed inset-0 bg-black/90 z-[100] flex items-center justify-center p-4 backdrop-blur-md animate-fadeIn">
+          <div className="bg-slate-900 rounded-[3.5rem] shadow-2xl max-w-lg w-full p-10 border-8 border-slate-800 relative overflow-hidden text-slate-100">
             <div className="absolute top-0 left-0 w-full h-5 bg-emerald-800"></div>
             <button 
               onClick={() => setShowApiModal(false)}
-              className="absolute top-8 right-8 text-4xl text-slate-300 hover:text-slate-600 transition-colors"
+              className="absolute top-8 right-8 text-4xl text-slate-500 hover:text-slate-200 transition-colors"
             >
               ✕
             </button>
             <div className="text-center">
               <div className="text-7xl mb-6">⚙️</div>
-              <h2 className="text-4xl font-black text-slate-900 mb-6">API 키 설정</h2>
+              <h2 className="text-4xl font-black text-white mb-6">API 키 설정</h2>
               
               <div className="mb-8 text-left">
-                <label className="block text-lg font-bold text-slate-700 mb-2">Gemini API 키 입력</label>
+                <label className="block text-lg font-bold text-slate-400 mb-2">Gemini API 키 입력</label>
                 <div className="flex flex-col gap-3">
                   <input
                     type="password"
                     value={inputKey}
                     onChange={(e) => setInputKey(e.target.value)}
                     placeholder={savedKey ? "••••••••••••••••" : "키를 여기에 붙여넣으세요"}
-                    className="w-full px-6 py-4 bg-slate-100 border-4 border-slate-200 rounded-2xl text-xl focus:border-emerald-500 outline-none transition-all"
+                    className="w-full px-6 py-4 bg-slate-800 border-4 border-slate-700 rounded-2xl text-xl focus:border-emerald-500 outline-none transition-all text-white"
                   />
                   <div className="flex gap-2">
                     <button
@@ -208,7 +208,7 @@ const App: React.FC = () => {
                     </button>
                     <button
                       onClick={handleClearKey}
-                      className="px-6 py-4 bg-red-50 text-red-600 text-xl font-black rounded-xl border-2 border-red-100 hover:bg-red-100 transition-all"
+                      className="px-6 py-4 bg-red-900/30 text-red-400 text-xl font-black rounded-xl border-2 border-red-900/50 hover:bg-red-900/50 transition-all"
                     >
                       삭제
                     </button>
@@ -216,15 +216,15 @@ const App: React.FC = () => {
                 </div>
               </div>
 
-              <div className="pt-6 border-t-4 border-emerald-50 mb-8">
+              <div className="pt-6 border-t-4 border-slate-800 mb-8">
                 <button
                   onClick={runConnectionTest}
                   disabled={apiTestStatus === 'testing' || (!savedKey && !inputKey)}
                   className={`w-full py-5 text-2xl font-black rounded-2xl border-4 transition-all shadow-sm ${
-                    apiTestStatus === 'testing' ? 'bg-slate-100 text-slate-400 border-slate-200' :
-                    apiTestStatus === 'success' ? 'bg-green-100 text-green-800 border-green-300' :
-                    apiTestStatus === 'error' ? 'bg-red-50 text-red-700 border-red-300' :
-                    'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
+                    apiTestStatus === 'testing' ? 'bg-slate-800 text-slate-500 border-slate-700' :
+                    apiTestStatus === 'success' ? 'bg-emerald-900/50 text-emerald-300 border-emerald-800' :
+                    apiTestStatus === 'error' ? 'bg-red-900/50 text-red-300 border-red-800' :
+                    'bg-slate-800 text-slate-200 border-slate-700 hover:bg-slate-700'
                   }`}
                 >
                   {apiTestStatus === 'testing' ? '연결 확인 중...' : 
@@ -234,9 +234,9 @@ const App: React.FC = () => {
                 </button>
               </div>
 
-              <div className="bg-emerald-50 p-5 rounded-2xl border-2 border-emerald-100 text-left">
-                <p className="text-sm text-emerald-800 leading-snug">
-                  <span className="font-black text-base">🛡️ 보안 안내:</span><br/>
+              <div className="bg-slate-950 p-5 rounded-2xl border-2 border-slate-800 text-left">
+                <p className="text-sm text-slate-400 leading-snug">
+                  <span className="font-black text-slate-200 text-base">🛡️ 보안 안내:</span><br/>
                   입력하신 키는 서버로 전송되지 않고 브라우저에만 저장됩니다. 깃허브에 공유하셔도 키 정보는 유출되지 않으니 안심하세요.
                 </p>
               </div>
@@ -246,22 +246,22 @@ const App: React.FC = () => {
       )}
 
       {/* Mart Header Sign */}
-      <header className="mb-8 w-full max-w-5xl bg-emerald-800 text-white p-6 rounded-t-[2rem] shadow-lg text-center relative overflow-hidden border-b-8 border-emerald-900">
-        <div className="absolute top-0 left-0 w-full h-2 bg-yellow-400"></div>
+      <header className="mb-8 w-full max-w-5xl bg-emerald-900 text-white p-6 rounded-t-[2rem] shadow-2xl text-center relative overflow-hidden border-b-8 border-emerald-950">
+        <div className="absolute top-0 left-0 w-full h-2 bg-yellow-600"></div>
         <div className="flex items-center justify-center gap-4 mb-1">
           <span className="text-6xl drop-shadow-md">{getCategoryIcon(category)}</span>
           <h1 className="text-6xl font-black tracking-tighter">메모리 마트</h1>
         </div>
-        <p className="text-2xl font-bold opacity-90">우리 동네 최고의 쇼핑 기억력 게임!</p>
+        <p className="text-2xl font-bold opacity-80">우리 동네 최고의 쇼핑 기억력 게임!</p>
       </header>
 
-      {/* Main Game Area */}
-      <main className="w-full max-w-5xl bg-white shadow-2xl rounded-b-[3rem] p-10 mart-border min-h-[650px] flex flex-col relative animate-fadeIn">
+      {/* Main Game Area - Dark Gray */}
+      <main className="w-full max-w-5xl bg-slate-900 shadow-[0_25px_50px_-12px_rgba(0,0,0,0.8)] rounded-b-[3rem] p-10 mart-border min-h-[650px] flex flex-col relative animate-fadeIn border-x-4 border-slate-800">
         
         {/* API Settings Button */}
         <button 
           onClick={() => setShowApiModal(true)}
-          className="absolute top-6 left-6 bg-emerald-50 hover:bg-emerald-100 p-4 rounded-full transition-all z-10 shadow-sm border-2 border-emerald-200 group"
+          className="absolute top-6 left-6 bg-slate-800 hover:bg-slate-700 p-4 rounded-full transition-all z-10 shadow-sm border-2 border-slate-700 group"
           title="보안 설정 및 API 관리"
         >
           <span className="text-3xl group-hover:rotate-90 transition-transform block">⚙️</span>
@@ -270,10 +270,10 @@ const App: React.FC = () => {
         {gameState !== GameState.LOBBY && (
           <button 
             onClick={goHome}
-            className="absolute top-6 right-6 bg-slate-100 hover:bg-slate-200 p-4 rounded-full transition-all z-50 shadow-md border-2 border-slate-200"
+            className="absolute top-6 right-6 bg-slate-800 hover:bg-slate-700 p-4 rounded-full transition-all z-50 shadow-md border-2 border-slate-700"
             title="처음으로"
           >
-            <span className="text-3xl">🏠</span>
+            <span className="text-3xl text-slate-200">🏠</span>
           </button>
         )}
 
@@ -282,19 +282,19 @@ const App: React.FC = () => {
             
             {/* Category Selection */}
             <div className="text-center w-full">
-              <p className="text-5xl text-emerald-950 mb-8 font-black tracking-tight">어디서 쇼핑을 할까요?</p>
+              <p className="text-5xl text-emerald-100 mb-8 font-black tracking-tight">어디서 쇼핑을 할까요?</p>
               <div className="flex flex-wrap gap-4 justify-center">
                 {(Object.values(Category) as Category[]).map((cat) => (
                   <button
                     key={cat}
                     onClick={() => setCategory(cat)}
-                    className={`px-5 py-3 rounded-2xl text-base font-bold transition-all shadow-sm flex items-center gap-2 border-2 ${
+                    className={`px-6 py-4 rounded-2xl text-lg font-bold transition-all shadow-sm flex items-center gap-2 border-2 ${
                       category === cat 
-                        ? 'bg-emerald-700 text-white border-emerald-800 scale-105 shadow-md ring-4 ring-emerald-100' 
-                        : 'bg-white text-slate-700 border-slate-200 hover:bg-emerald-50'
+                        ? 'bg-emerald-700 text-white border-emerald-600 scale-105 shadow-md ring-4 ring-emerald-900/50' 
+                        : 'bg-slate-800 text-slate-300 border-slate-700 hover:bg-slate-700'
                     }`}
                   >
-                    <span className="text-xl">{getCategoryIcon(cat)}</span>
+                    <span className="text-2xl">{getCategoryIcon(cat)}</span>
                     {cat}
                   </button>
                 ))}
@@ -303,7 +303,7 @@ const App: React.FC = () => {
 
             {/* Difficulty Selection */}
             <div className="text-center w-full">
-              <p className="text-5xl text-emerald-950 mb-8 font-black tracking-tight">난이도를 선택해 주세요</p>
+              <p className="text-5xl text-emerald-100 mb-8 font-black tracking-tight">난이도를 선택해 주세요</p>
               <div className="flex flex-wrap gap-6 justify-center">
                 {(Object.values(Difficulty) as Difficulty[]).map((level) => (
                   <button
@@ -311,8 +311,8 @@ const App: React.FC = () => {
                     onClick={() => setDifficulty(level)}
                     className={`px-14 py-7 rounded-3xl text-3xl font-black transition-all shadow-md border-b-8 active:border-b-0 active:translate-y-1 ${
                       difficulty === level 
-                        ? 'bg-slate-900 text-white border-black scale-110' 
-                        : 'bg-slate-200 text-slate-600 border-slate-300 hover:bg-slate-300'
+                        ? 'bg-slate-200 text-slate-900 border-slate-400 scale-110' 
+                        : 'bg-slate-800 text-slate-400 border-slate-700 hover:bg-slate-700'
                     }`}
                   >
                     {level}
@@ -325,12 +325,12 @@ const App: React.FC = () => {
               <button
                 onClick={startGame}
                 disabled={loading}
-                className="px-28 py-10 bg-emerald-700 text-white text-5xl font-black rounded-full shadow-[0_10px_0_rgb(6,95,70)] hover:bg-emerald-800 transition-all active:shadow-none active:translate-y-2 disabled:bg-slate-400 disabled:shadow-none"
+                className="px-28 py-10 bg-emerald-700 text-white text-5xl font-black rounded-full shadow-[0_10px_0_rgb(6,95,70)] hover:bg-emerald-800 transition-all active:shadow-none active:translate-y-2 disabled:bg-slate-700 disabled:text-slate-500 disabled:shadow-none"
               >
                 {loading ? '상품 준비 중...' : '쇼핑 시작!'}
               </button>
               {isPrefetching && !loading && (
-                <div className="absolute -bottom-12 left-1/2 -translate-x-1/2 text-emerald-600 font-bold animate-pulse text-xl whitespace-nowrap">
+                <div className="absolute -bottom-12 left-1/2 -translate-x-1/2 text-emerald-500 font-bold animate-pulse text-xl whitespace-nowrap">
                   카트를 소독하고 있어요...
                 </div>
               )}
@@ -340,27 +340,27 @@ const App: React.FC = () => {
 
         {gameState === GameState.OBSERVATION && scenario && (
           <div className="flex-1 flex flex-col animate-fadeIn">
-            <div className="flex justify-between items-center mb-8 bg-emerald-50 p-6 rounded-3xl border-2 border-emerald-100">
+            <div className="flex justify-between items-center mb-8 bg-slate-950/50 p-6 rounded-3xl border-2 border-slate-800">
               <div className="flex items-center gap-3">
                 <span className="text-4xl">🏪</span>
-                <h2 className="text-4xl font-black text-emerald-900">{scenario.theme}</h2>
+                <h2 className="text-4xl font-black text-emerald-300">{scenario.theme}</h2>
               </div>
-              <div className="bg-red-600 px-10 py-4 rounded-2xl shadow-lg border-b-4 border-red-800">
+              <div className="bg-red-900/80 px-10 py-4 rounded-2xl shadow-lg border-b-4 border-red-950">
                 <span className="text-4xl font-black text-white">남은 시간: {timer}초</span>
               </div>
             </div>
             
-            <p className="text-3xl text-emerald-900 mb-10 font-black text-center py-6 bg-emerald-50 rounded-3xl border-2 border-emerald-100 animate-pulse">
-              아래 물건들이 담길 <span className="text-red-600 underline">순서</span>를 꼭 기억하세요!
+            <p className="text-3xl text-slate-200 mb-10 font-black text-center py-6 bg-slate-800/50 rounded-3xl border-2 border-slate-700 animate-pulse">
+              아래 물건들이 담길 <span className="text-emerald-400 underline">순서</span>를 꼭 기억하세요!
             </p>
 
             <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-5">
               {scenario.items.map((item, idx) => (
-                <div key={item.id} className="flex flex-col items-center p-5 bg-white rounded-[2rem] border-4 border-slate-100 shadow-lg hover:border-emerald-300 transition-colors">
-                  <span className="text-2xl font-black bg-yellow-400 px-4 py-1 rounded-full mb-4 text-slate-900">{idx + 1}번</span>
+                <div key={item.id} className="flex flex-col items-center p-5 bg-slate-800 rounded-[2rem] border-4 border-slate-700 shadow-lg hover:border-emerald-500 transition-colors">
+                  <span className="text-2xl font-black bg-yellow-600 px-4 py-1 rounded-full mb-4 text-slate-900">{idx + 1}번</span>
                   <div className="text-8xl mb-6">{item.icon}</div>
-                  <div className="text-2xl font-black text-slate-800 mb-1">{item.name}</div>
-                  <div className="text-lg text-slate-500 font-bold">{item.description}</div>
+                  <div className="text-2xl font-black text-white mb-1">{item.name}</div>
+                  <div className="text-lg text-slate-400 font-bold">{item.description}</div>
                 </div>
               ))}
             </div>
@@ -370,14 +370,14 @@ const App: React.FC = () => {
         {gameState === GameState.FILL_GAPS && scenario && (
           <div className="flex-1 flex flex-col animate-fadeIn">
             {showHint && (
-              <div className="absolute inset-0 bg-white/98 z-40 flex flex-col items-center justify-center p-8 backdrop-blur-sm">
-                <div className="bg-white p-10 rounded-[3rem] shadow-2xl border-8 border-red-500 text-center">
-                  <h3 className="text-4xl font-black text-red-600 mb-10">⚠️ 잠깐 확인하세요!</h3>
+              <div className="absolute inset-0 bg-slate-950/95 z-40 flex flex-col items-center justify-center p-8 backdrop-blur-md">
+                <div className="bg-slate-900 p-10 rounded-[3rem] shadow-2xl border-8 border-red-900 text-center">
+                  <h3 className="text-4xl font-black text-red-400 mb-10">⚠️ 잠깐 확인하세요!</h3>
                   <div className="flex flex-wrap justify-center gap-6">
                     {scenario.items.map((item, idx) => (
-                      <div key={`hint-${idx}`} className="flex flex-col items-center p-4 bg-emerald-50 rounded-2xl border-2 border-emerald-100">
+                      <div key={`hint-${idx}`} className="flex flex-col items-center p-4 bg-slate-800 rounded-2xl border-2 border-slate-700">
                         <span className="text-7xl mb-2">{item.icon}</span>
-                        <span className="text-xl font-black bg-emerald-700 text-white px-3 py-1 rounded-full">{idx + 1}번</span>
+                        <span className="text-xl font-black bg-emerald-800 text-white px-3 py-1 rounded-full">{idx + 1}번</span>
                       </div>
                     ))}
                   </div>
@@ -387,12 +387,12 @@ const App: React.FC = () => {
 
             <div className="flex justify-between items-center mb-8">
               <div className="flex items-center gap-4">
-                <div className="bg-yellow-400 p-4 rounded-2xl">
+                <div className="bg-yellow-700 p-4 rounded-2xl">
                   <span className="text-4xl">🛒</span>
                 </div>
                 <div>
-                  <h2 className="text-4xl font-black text-slate-900">장바구니를 채워주세요!</h2>
-                  <p className="text-2xl text-emerald-700 font-bold italic">{scenario.theme}</p>
+                  <h2 className="text-4xl font-black text-white">장바구니를 채워주세요!</h2>
+                  <p className="text-2xl text-emerald-400 font-bold italic">{scenario.theme}</p>
                 </div>
               </div>
               {(difficulty === Difficulty.NORMAL || difficulty === Difficulty.HARD) && (
@@ -400,7 +400,7 @@ const App: React.FC = () => {
                   onClick={useHint}
                   disabled={hintUsed}
                   className={`px-10 py-5 rounded-2xl text-2xl font-black transition-all shadow-md border-b-4 ${
-                    hintUsed ? 'bg-slate-200 text-slate-400 border-slate-300 cursor-not-allowed' : 'bg-red-500 text-white border-red-700 hover:bg-red-600'
+                    hintUsed ? 'bg-slate-800 text-slate-600 border-slate-700 cursor-not-allowed' : 'bg-red-800 text-white border-red-950 hover:bg-red-700'
                   }`}
                 >
                   {hintUsed ? '힌트 사용완료' : '힌트 보기 (3초)'}
@@ -414,29 +414,29 @@ const App: React.FC = () => {
                   key={`slot-${idx}`}
                   onClick={() => answer && removeAnswer(idx)}
                   className={`cursor-pointer flex flex-col items-center justify-center p-4 min-h-[180px] rounded-[2rem] border-4 border-dashed transition-all transform hover:scale-105 ${
-                    answer ? 'bg-emerald-50 border-emerald-500 shadow-xl' : 'bg-slate-50 border-slate-300'
+                    answer ? 'bg-slate-800 border-emerald-500 shadow-xl' : 'bg-slate-950 border-slate-700'
                   }`}
                 >
-                  <span className="text-xl font-black text-slate-400 mb-4">{idx + 1}번째 상품</span>
+                  <span className="text-xl font-black text-slate-500 mb-4">{idx + 1}번째 상품</span>
                   {answer ? (
                     <div className="animate-fadeIn text-center">
                       <div className="text-7xl mb-2">{answer.icon}</div>
-                      <div className="text-xl font-black text-slate-800">{answer.name}</div>
-                      <span className="inline-block mt-2 text-sm bg-red-100 text-red-600 px-3 py-1 rounded-full font-bold">빼기</span>
+                      <div className="text-xl font-black text-white">{answer.name}</div>
+                      <span className="inline-block mt-2 text-sm bg-red-900/30 text-red-400 px-3 py-1 rounded-full font-bold">빼기</span>
                     </div>
                   ) : (
-                    <div className="text-slate-200 text-7xl font-black">?</div>
+                    <div className="text-slate-700 text-7xl font-black">?</div>
                   )}
                 </div>
               ))}
             </div>
 
-            <div className="bg-slate-100 p-8 rounded-[2.5rem] border-4 border-slate-200 relative overflow-hidden">
+            <div className="bg-slate-950/50 p-8 rounded-[2.5rem] border-4 border-slate-800 relative overflow-hidden">
               <div className="absolute top-0 right-0 p-4 opacity-5">
-                <span className="text-9xl">🏪</span>
+                <span className="text-9xl text-slate-400">🏪</span>
               </div>
-              <h3 className="text-3xl font-black text-slate-800 mb-6 text-center">매장 진열대 <span className="text-emerald-700 text-xl font-bold">(클릭해서 카트에 담으세요)</span></h3>
-              <div className="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-4 max-h-[280px] overflow-y-auto p-4 bg-white rounded-3xl shadow-inner">
+              <h3 className="text-3xl font-black text-slate-200 mb-6 text-center">매장 진열대 <span className="text-emerald-500 text-xl font-bold">(클릭해서 카트에 담으세요)</span></h3>
+              <div className="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-4 max-h-[280px] overflow-y-auto p-4 bg-slate-900 rounded-3xl shadow-inner border border-slate-800">
                 {availableOptions.map((item) => {
                   const isUsed = userAnswers.some(a => a?.id === item.id);
                   return (
@@ -445,11 +445,11 @@ const App: React.FC = () => {
                       onClick={() => handleSelectOption(item)}
                       disabled={isUsed}
                       className={`flex flex-col items-center p-4 rounded-2xl shadow-md transition-all transform active:scale-95 border-2 ${
-                        isUsed ? 'opacity-20 bg-slate-100 grayscale cursor-default' : 'bg-white border-slate-100 hover:border-emerald-400 hover:bg-emerald-50'
+                        isUsed ? 'opacity-10 bg-slate-800 grayscale cursor-default border-transparent' : 'bg-slate-800 border-slate-700 hover:border-emerald-500 hover:bg-slate-750'
                       }`}
                     >
                       <span className="text-6xl mb-2">{item.icon}</span>
-                      <span className="text-lg font-black text-slate-800 truncate w-full">{item.name}</span>
+                      <span className="text-lg font-black text-slate-200 truncate w-full">{item.name}</span>
                     </button>
                   );
                 })}
@@ -460,7 +460,7 @@ const App: React.FC = () => {
               <button
                 onClick={checkResults}
                 disabled={userAnswers.some(a => a === null)}
-                className="px-28 py-8 bg-emerald-700 text-white text-5xl font-black rounded-full shadow-[0_8px_0_rgb(6,95,70)] hover:bg-emerald-800 transition-all active:shadow-none active:translate-y-1 disabled:bg-slate-300 disabled:shadow-none"
+                className="px-28 py-8 bg-emerald-700 text-white text-5xl font-black rounded-full shadow-[0_8px_0_rgb(6,95,70)] hover:bg-emerald-800 transition-all active:shadow-none active:translate-y-1 disabled:bg-slate-800 disabled:text-slate-600 disabled:shadow-none"
               >
                 계산하기
               </button>
@@ -474,10 +474,10 @@ const App: React.FC = () => {
               <div className="text-[10rem] leading-none mb-8 drop-shadow-xl">
                 {score === scenario.items.length ? '👑' : score >= (scenario.items.length / 2) ? '😊' : '💪'}
               </div>
-              <h2 className="text-7xl font-black text-slate-900 mb-6">
+              <h2 className="text-7xl font-black text-white mb-6">
                 총 {score}개 성공!
               </h2>
-              <p className="text-4xl text-slate-700 font-black max-w-3xl leading-snug">
+              <p className="text-4xl text-slate-300 font-black max-w-3xl leading-snug">
                 {score === scenario.items.length 
                   ? '와아! 완벽한 기억력입니다!\n마트 VIP로 임명합니다!' 
                   : score >= (scenario.items.length / 2) 
@@ -486,18 +486,18 @@ const App: React.FC = () => {
               </p>
             </div>
 
-            <div className="w-full bg-slate-50 rounded-[3rem] p-10 mb-12 border-4 border-slate-100 shadow-inner">
-              <h3 className="text-3xl font-black text-slate-800 mb-8 border-b-4 border-yellow-400 inline-block px-6">영수증 확인하기</h3>
+            <div className="w-full bg-slate-950/50 rounded-[3rem] p-10 mb-12 border-4 border-slate-800 shadow-inner">
+              <h3 className="text-3xl font-black text-slate-200 mb-8 border-b-4 border-yellow-700 inline-block px-6">영수증 확인하기</h3>
               <div className="flex flex-wrap justify-center gap-6">
                 {scenario.items.map((item, idx) => (
-                  <div key={`res-${idx}`} className="flex flex-col items-center bg-white p-6 rounded-[2rem] shadow-md border-2 border-slate-100 w-36 relative overflow-hidden">
+                  <div key={`res-${idx}`} className="flex flex-col items-center bg-slate-800 p-6 rounded-[2rem] shadow-md border-2 border-slate-700 w-36 relative overflow-hidden">
                     <div className="absolute top-0 left-0 w-full h-2 bg-emerald-700"></div>
-                    <span className="text-lg font-black bg-slate-100 px-3 py-1 rounded-full mb-3 text-slate-600">{idx+1}번</span>
+                    <span className="text-lg font-black bg-slate-900 text-slate-400 px-3 py-1 rounded-full mb-3">{idx+1}번</span>
                     <span className="text-6xl mb-3">{item.icon}</span>
-                    <span className="text-xl font-black text-slate-800 mb-4 truncate w-full">{item.name}</span>
+                    <span className="text-xl font-black text-white mb-4 truncate w-full">{item.name}</span>
                     <div className="text-5xl">
                       {userAnswers[idx]?.id === item.id ? (
-                        <span className="text-green-500 font-black">⭕</span>
+                        <span className="text-emerald-400 font-black">⭕</span>
                       ) : (
                         <span className="text-red-500 font-black">❌</span>
                       )}
@@ -516,7 +516,7 @@ const App: React.FC = () => {
               </button>
               <button
                 onClick={goHome}
-                className="px-16 py-8 bg-slate-800 text-white text-4xl font-black rounded-full shadow-[0_8px_0_rgb(30,41,59)] hover:bg-slate-900 transition-all active:shadow-none active:translate-y-1 flex items-center gap-4"
+                className="px-16 py-8 bg-slate-700 text-white text-4xl font-black rounded-full shadow-[0_8px_0_rgb(30,41,59)] hover:bg-slate-600 transition-all active:shadow-none active:translate-y-1 flex items-center gap-4"
               >
                 <span>⚙️ 레벨변경</span>
               </button>
@@ -525,8 +525,8 @@ const App: React.FC = () => {
         )}
       </main>
 
-      <footer className="mt-10 text-slate-600 text-center font-bold text-xl">
-        <p>어르신들의 두뇌 건강 파트너, <span className="text-emerald-700 font-black">메모리 마트</span></p>
+      <footer className="mt-10 text-slate-500 text-center font-bold text-xl">
+        <p>어르신들의 두뇌 건강 파트너, <span className="text-emerald-600 font-black">메모리 마트</span></p>
       </footer>
     </div>
   );
