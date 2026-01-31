@@ -57,7 +57,7 @@ const App: React.FC = () => {
       setScenario(currentScenario);
       initiateGameSession(currentScenario);
     } catch (error) {
-      alert("상품을 진열하는 중 오류가 발생했습니다. API 키가 등록되어 있지 않거나 잘못되었습니다.");
+      console.error("Game Start Error:", error);
       setShowApiModal(true);
     } finally {
       setLoading(false);
@@ -76,23 +76,24 @@ const App: React.FC = () => {
     setAvailableOptions(pool);
   };
 
-  const handleOpenKeyDialog = async () => {
+  // 깃허브 등 외부 환경에서 안전하게 키를 입력받기 위한 시스템 창 호출
+  const handleRegisterKey = async () => {
     try {
-      // @ts-ignore - window.aistudio is globally defined in the platform environment
+      // @ts-ignore - window.aistudio is the platform's secure key manager
       await window.aistudio.openSelectKey();
       setApiTestStatus('idle');
-      alert("보안 입력창이 열렸습니다. 준비하신 API 키를 복사해서 붙여넣어 주세요.");
+      alert("보안 입력창이 열렸습니다. 복사하신 Gemini API 키를 해당 창에 붙여넣고 저장해 주세요.");
     } catch (e) {
       console.error("Failed to open key dialog", e);
     }
   };
 
-  const handleDeleteKey = () => {
-    if (window.confirm("정말로 API 키 설정을 초기화하시겠습니까? 다시 사용하려면 새로 등록해야 합니다.")) {
+  // 키 설정을 초기화(삭제)하는 기능
+  const handleClearKey = () => {
+    if (window.confirm("정말로 설정된 API 키 정보를 초기화하시겠습니까? (깃허브 등 공개 공간에서 안전하게 로그아웃 하는 것과 같습니다)")) {
       setApiTestStatus('idle');
-      // 로컬 게임 상태 초기화
       setPrefetchedScenario(null);
-      alert("키 설정이 초기화되었습니다. 'API 키 입력' 버튼을 눌러 새 키를 등록해 주세요.");
+      alert("키 설정 정보가 초기화되었습니다. 다시 게임을 하려면 'API 키 등록' 버튼을 눌러주세요.");
     }
   };
 
@@ -169,65 +170,65 @@ const App: React.FC = () => {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-4">
-      {/* API Key Modal */}
+      {/* API Key Modal - 깃허브 사용자를 위한 보안 안내 창 */}
       {showApiModal && (
-        <div className="fixed inset-0 bg-black/70 z-[100] flex items-center justify-center p-4 backdrop-blur-sm animate-fadeIn">
-          <div className="bg-white rounded-[3rem] shadow-2xl max-w-lg w-full p-10 border-8 border-emerald-100 relative overflow-hidden">
-            <div className="absolute top-0 left-0 w-full h-4 bg-emerald-800"></div>
+        <div className="fixed inset-0 bg-black/80 z-[100] flex items-center justify-center p-4 backdrop-blur-md animate-fadeIn">
+          <div className="bg-white rounded-[3.5rem] shadow-2xl max-w-lg w-full p-12 border-8 border-emerald-100 relative overflow-hidden">
+            <div className="absolute top-0 left-0 w-full h-5 bg-emerald-800"></div>
             <button 
               onClick={() => setShowApiModal(false)}
-              className="absolute top-6 right-6 text-4xl text-slate-400 hover:text-slate-600 transition-colors"
+              className="absolute top-8 right-8 text-4xl text-slate-300 hover:text-slate-600 transition-colors"
             >
               ✕
             </button>
             <div className="text-center">
-              <div className="text-6xl mb-6">🔒</div>
-              <h2 className="text-4xl font-black text-slate-900 mb-4">보안 API 관리</h2>
+              <div className="text-7xl mb-6">🏪</div>
+              <h2 className="text-4xl font-black text-slate-900 mb-6">메모리 마트 관리실</h2>
               <p className="text-xl text-slate-600 font-medium mb-10 leading-relaxed">
-                깃허브 업로드 시에도 안전하도록<br/>
-                API 키는 보안 창을 통해 관리됩니다.
+                깃허브 등 외부에서도 안전하게!<br/>
+                복사한 API 키를 아래 버튼을 눌러<br/>
+                <span className="text-emerald-700 font-black underline decoration-emerald-200">보안 입력창</span>에 저장해 주세요.
               </p>
 
               <div className="space-y-4 mb-8">
-                {/* 이 버튼이 클릭되면 키를 입력(붙여넣기)할 수 있는 보안 시스템 창이 뜹니다. */}
+                {/* 깃허브 사용자가 직접 키를 복사/붙여넣기 할 수 있는 시스템 창을 엽니다. */}
                 <button
-                  onClick={handleOpenKeyDialog}
-                  className="w-full py-6 bg-emerald-700 text-white text-2xl font-black rounded-2xl shadow-lg hover:bg-emerald-800 transition-all flex flex-col items-center justify-center"
+                  onClick={handleRegisterKey}
+                  className="w-full py-7 bg-emerald-700 text-white text-2xl font-black rounded-[2rem] shadow-[0_8px_0_rgb(6,95,70)] hover:bg-emerald-800 transition-all active:translate-y-1 active:shadow-none flex flex-col items-center justify-center gap-1 group"
                 >
-                  <span className="text-sm opacity-80 mb-1">복사한 키를 여기에</span>
-                  <span>API 키 입력 및 저장하기</span>
+                  <span className="text-base opacity-75 group-hover:opacity-100">여기를 눌러 키 붙여넣기</span>
+                  <span>API 키 등록 및 저장</span>
                 </button>
                 
                 <button
-                  onClick={handleDeleteKey}
-                  className="w-full py-4 bg-red-50 text-red-600 text-xl font-black rounded-2xl border-2 border-red-200 hover:bg-red-100 transition-all flex items-center justify-center gap-2"
+                  onClick={handleClearKey}
+                  className="w-full py-4 bg-slate-50 text-slate-400 text-lg font-bold rounded-2xl border-2 border-slate-100 hover:bg-red-50 hover:text-red-600 hover:border-red-100 transition-all"
                 >
-                  <span>🗑️ API 키 삭제하기</span>
+                  기존 API 키 삭제 (초기화)
                 </button>
 
-                <div className="pt-6 border-t-2 border-slate-100 mt-6">
+                <div className="pt-8 border-t-4 border-emerald-50 mt-8">
                   <button
                     onClick={runConnectionTest}
                     disabled={apiTestStatus === 'testing'}
-                    className={`w-full py-5 text-2xl font-black rounded-2xl border-4 transition-all ${
+                    className={`w-full py-5 text-2xl font-black rounded-2xl border-4 transition-all shadow-sm ${
                       apiTestStatus === 'testing' ? 'bg-slate-100 text-slate-400 border-slate-200' :
                       apiTestStatus === 'success' ? 'bg-green-100 text-green-800 border-green-300 scale-105' :
                       apiTestStatus === 'error' ? 'bg-red-50 text-red-700 border-red-300' :
-                      'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'
+                      'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
                     }`}
                   >
-                    {apiTestStatus === 'testing' ? '연결 시도 중...' : 
-                     apiTestStatus === 'success' ? '✨ 연결 성공! (작동 중)' : 
-                     apiTestStatus === 'error' ? '❌ 연결 실패 (키 재입력 필요)' : 
-                     '📡 정상 작동 확인하기'}
+                    {apiTestStatus === 'testing' ? '연결 확인 중...' : 
+                     apiTestStatus === 'success' ? '✅ 연결 성공! 게임 가능' : 
+                     apiTestStatus === 'error' ? '❌ 연결 실패 (키 재확인)' : 
+                     '📡 연결 상태 테스트하기'}
                   </button>
                 </div>
               </div>
 
-              <div className="bg-yellow-50 p-4 rounded-2xl border-2 border-yellow-100 text-left">
-                <p className="text-sm text-yellow-800 font-bold mb-1">💡 팁:</p>
-                <p className="text-xs text-yellow-700 leading-tight">
-                  코드를 깃허브에 공유해도 API 키는 유출되지 않으니 안심하세요. 키는 사용자의 로컬 브라우저에만 암호화되어 저장됩니다.
+              <div className="bg-emerald-50 p-5 rounded-2xl border-2 border-emerald-100 text-left">
+                <p className="text-sm text-emerald-800 leading-snug">
+                  <span className="font-black">🛡️ 보안 안내:</span> 이 방식은 소스 코드에 키를 남기지 않으므로 깃허브에 안심하고 올리셔도 됩니다. 입력된 키는 사용자의 브라우저 메모리에만 안전하게 보관됩니다.
                 </p>
               </div>
             </div>
