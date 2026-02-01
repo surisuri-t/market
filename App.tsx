@@ -45,9 +45,9 @@ const App: React.FC = () => {
     soundFail.current = new Audio('https://assets.mixkit.co/active_storage/sfx/2572/2572-preview.mp3');
     soundStart.current = new Audio('https://assets.mixkit.co/active_storage/sfx/2019/2019-preview.mp3');
     soundPop.current = new Audio('https://assets.mixkit.co/active_storage/sfx/2632/2632-preview.mp3');
-    // 1. 힌트 효과음 카운트다운용
+    // 힌트 효과음 카운트다운용
     soundCountdown.current = new Audio('https://assets.mixkit.co/active_storage/sfx/1110/1110-preview.mp3');
-    // 2. 계산대로 가기 칭찬용
+    // 계산대로 가기 칭찬용
     soundPraise.current = new Audio('https://assets.mixkit.co/active_storage/sfx/2018/2018-preview.mp3');
   }, []);
 
@@ -245,7 +245,6 @@ const App: React.FC = () => {
 
   const useHint = () => {
     if (hintsRemaining <= 0 || showHint) return;
-    // 1. 힌트 효과음 카운트다운으로 변경
     playSound('countdown');
     setShowHint(true);
     setHintsRemaining(prev => prev - 1);
@@ -261,7 +260,6 @@ const App: React.FC = () => {
   const checkResults = () => {
     if (!scenario) return;
     
-    // 2. 계산대로 가기: 칭찬 효과음 넣기
     playSound('praise'); 
 
     let correctCount = 0;
@@ -272,7 +270,6 @@ const App: React.FC = () => {
     });
     setScore(correctCount);
     
-    // 결과 화면 전환 전 약간의 딜레이를 주어 칭찬 효과음이 충분히 들리도록 함
     setTimeout(() => {
       if (correctCount === scenario.items.length) {
         playSound('success'); 
@@ -307,7 +304,7 @@ const App: React.FC = () => {
           <div className="bg-slate-900 rounded-[2.5rem] shadow-2xl max-w-lg w-full p-8 border-4 border-slate-800 relative overflow-hidden text-slate-100">
             <div className="absolute top-0 left-0 w-full h-4 bg-emerald-800"></div>
             <button 
-              onClick={() => { playSound('pop'); setShowApiModal(false); }}
+              onClick={() => { setShowApiModal(false); }}
               className="absolute top-4 right-4 text-3xl text-slate-500 hover:text-slate-200 transition-colors"
             >
               ✕
@@ -328,13 +325,13 @@ const App: React.FC = () => {
                   />
                   <div className="flex gap-2">
                     <button
-                      onClick={() => { playSound('pop'); handleSaveKey(); }}
+                      onClick={() => { handleSaveKey(); }}
                       className="flex-1 py-3 bg-emerald-700 text-white text-xl font-black rounded-xl hover:bg-emerald-800 transition-all shadow-md active:translate-y-1"
                     >
                       저장하기
                     </button>
                     <button
-                      onClick={() => { playSound('pop'); handleClearKey(); }}
+                      onClick={() => { handleClearKey(); }}
                       className="px-6 py-3 bg-red-900/30 text-red-400 text-lg font-black rounded-xl border-2 border-red-900/50 hover:bg-red-900/50 transition-all"
                     >
                       삭제
@@ -345,7 +342,7 @@ const App: React.FC = () => {
 
               <div className="pt-4 border-t-2 border-slate-800 mb-6">
                 <button
-                  onClick={() => { playSound('pop'); runConnectionTest(); }}
+                  onClick={() => { runConnectionTest(); }}
                   disabled={apiTestStatus === 'testing' || (!savedKey && !inputKey)}
                   className={`w-full py-4 text-xl font-black rounded-xl border-2 transition-all shadow-sm ${
                     apiTestStatus === 'testing' ? 'bg-slate-800 text-slate-500 border-slate-700' :
@@ -389,7 +386,7 @@ const App: React.FC = () => {
         
         {/* Settings Icon - Far Right End of Header Area */}
         <button 
-          onClick={() => { playSound('pop'); setShowApiModal(true); }}
+          onClick={() => { setShowApiModal(true); }}
           className="absolute top-1/2 -translate-y-1/2 right-6 bg-white/10 hover:bg-white/20 p-3 rounded-full transition-all shadow-sm border border-white/20 group"
           title="설정"
         >
