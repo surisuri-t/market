@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Difficulty, Category, GameState, GameScenario, GameItem } from './types';
 import { generateScenario, testApiKeyConnection } from './services/geminiService';
@@ -47,8 +46,11 @@ const App: React.FC = () => {
     soundPop.current = new Audio('https://assets.mixkit.co/active_storage/sfx/2632/2632-preview.mp3');
     // 힌트 효과음 카운트다운용
     soundCountdown.current = new Audio('https://assets.mixkit.co/active_storage/sfx/1110/1110-preview.mp3');
-    // 계산대로 가기 칭찬용
+    // 계산대로 가기 칭찬용 (볼륨을 0.5로 설정하여 소리를 약간 줄임)
     soundPraise.current = new Audio('https://assets.mixkit.co/active_storage/sfx/2018/2018-preview.mp3');
+    if (soundPraise.current) {
+      soundPraise.current.volume = 0.5;
+    }
   }, []);
 
   const playSound = (type: 'select' | 'success' | 'fail' | 'start' | 'pop' | 'countdown' | 'praise') => {
@@ -84,14 +86,18 @@ const App: React.FC = () => {
     }
   }, [savedKey]);
 
+  // 로비나 결과 화면에 있을 때 다음 게임을 미리 준비합니다.
   useEffect(() => {
-    if (gameState === GameState.LOBBY) {
-      setPrefetchedScenario(null);
-      prefetch(difficulty, category);
+    if (gameState === GameState.LOBBY || gameState === GameState.RESULT) {
+      if (!prefetchedScenario && !isPrefetching) {
+        prefetch(difficulty, category);
+      }
     }
-  }, [difficulty, category, gameState, prefetch]);
+  }, [difficulty, category, gameState, prefetch, prefetchedScenario, isPrefetching]);
 
   const startGame = async () => {
+    if (loading) return; // 중복 클릭 방지
+
     if (prefetchedScenario) {
       setScenario(prefetchedScenario);
       initiateGameSession(prefetchedScenario);
@@ -160,6 +166,7 @@ const App: React.FC = () => {
   const goHome = () => {
     setGameState(GameState.LOBBY);
     setScenario(null);
+    setPrefetchedScenario(null); // 홈으로 갈 때는 미리 불러온 것도 초기화
   };
 
   useEffect(() => {
@@ -406,7 +413,7 @@ const App: React.FC = () => {
                 {(Object.values(Category) as Category[]).map((cat) => (
                   <button
                     key={cat}
-                    onClick={() => { setCategory(cat); }}
+                    onClick={() => { setCategory(cat); setPrefetchedScenario(null); }}
                     className={`px-5 py-3 rounded-xl text-lg font-black transition-all shadow-sm flex items-center gap-2 border-2 ${
                       category === cat 
                         ? 'bg-emerald-700 text-white border-emerald-600 scale-105 shadow-md ring-2 ring-emerald-900/50' 
@@ -426,7 +433,7 @@ const App: React.FC = () => {
                 {(Object.values(Difficulty) as Difficulty[]).map((level) => (
                   <button
                     key={level}
-                    onClick={() => { setDifficulty(level); }}
+                    onClick={() => { setDifficulty(level); setPrefetchedScenario(null); }}
                     className={`px-12 py-6 rounded-2xl text-2xl font-black transition-all shadow-md border-b-8 active:border-b-0 active:translate-y-1 ${
                       difficulty === level 
                         ? 'bg-slate-200 text-slate-900 border-slate-400 scale-110' 
@@ -651,9 +658,10 @@ const App: React.FC = () => {
             <div className="flex flex-wrap gap-4 justify-center">
               <button
                 onClick={startGame}
-                className="px-8 py-4 bg-emerald-700 text-white text-xl font-black rounded-full shadow-[0_4px_0_rgb(6,95,70)] hover:bg-emerald-800 transition-all active:shadow-none active:translate-y-1"
+                disabled={loading}
+                className={`px-8 py-4 bg-emerald-700 text-white text-xl font-black rounded-full shadow-[0_4px_0_rgb(6,95,70)] hover:bg-emerald-800 transition-all active:shadow-none active:translate-y-1 ${loading ? 'opacity-70 grayscale cursor-not-allowed' : ''}`}
               >
-                🔄 다시하기
+                {loading ? '🔄 준비 중...' : '🔄 다시하기'}
               </button>
               <button
                 onClick={goHome}
@@ -662,6 +670,9 @@ const App: React.FC = () => {
                 ⚙️ 레벨변경
               </button>
             </div>
+            {isPrefetching && !loading && (
+              <p className="mt-4 text-emerald-500 font-bold animate-pulse">다음 판 준비 중...</p>
+            )}
           </div>
         )}
       </main>
