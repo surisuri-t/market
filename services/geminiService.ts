@@ -71,30 +71,27 @@ export async function generateScenario(difficulty: Difficulty, category: Categor
     decoyCount = 3; 
   }
 
-  // DINING 카테고리 지시사항 보강
-  const categoryContext = category === Category.DINING 
-    ? "식사하기(한국 전통 요리 위주)" 
-    : category;
+  // 매번 다른 결과를 얻기 위해 무작위 요소를 추가합니다.
+  const randomFactor = Math.random().toString(36).substring(7);
 
-  const prompt = `Generate a Korean shopping memory game scenario.
-Category: ${categoryContext}.
+  const prompt = `Generate a UNIQUE and CREATIVE Korean shopping memory game scenario.
+Category: ${category}.
 Difficulty: ${difficulty}.
-Items: ${itemCount} items to remember in order.
-Decoys: ${decoyCount} similar items to confuse the user.
-JSON structure: { theme: string, items: [{id, name, description, icon}], decoys: [{id, name, description, icon}] }.
+Item Count: ${itemCount}.
+Decoy Count: ${decoyCount}.
+Random Seed: ${randomFactor}.
 
 Specific Rules:
-1. Use VERY short names (e.g., '김밥', '냉면', '떡볶이', '불고기', '파전').
-2. Icons MUST be single high-quality emojis.
-3. Descriptions MUST be under 8 characters.
-4. If category is DINING, use these specific descriptions:
-   - 김밥: '검정김에말린'
-   - 냉면: '시원한여름면'
-   - 떡볶이: '빨갛고매운맛'
-   - 불고기: '양념된고기요리'
-   - 파전: '한국식피자파전'
-   - 삼계탕: '든든한보양식'
-   - 김치찌개: '얼큰한뚝배기'`;
+1. DO NOT repeat the same items from previous sessions. Be creative within the category.
+2. Theme name (theme) should be catchy and specific (e.g., '손주들을 위한 간식 장보기', '비 오는 날의 부침개 재료').
+3. Items MUST be in a specific logical order for the user to remember.
+4. Descriptions MUST be under 8 characters and helpful for older adults.
+5. JSON structure MUST be exactly: { theme: string, items: [{id, name, description, icon}], decoys: [{id, name, description, icon}] }.
+
+Category Context:
+- If Category is DINING: Use Korean dishes.
+- If Category is TRAVEL: Use travel essentials.
+- Otherwise, follow the standard category items.`;
 
   const response = await callWithRetry(() => ai.models.generateContent({
     model: 'gemini-3-flash-preview',
@@ -144,31 +141,19 @@ Specific Rules:
     return data as GameScenario;
   } catch (error) {
     console.error("Failed to parse Gemini response:", error);
-    // Fallback logic for DINING with user-provided specific descriptions
-    const fallbackItems = category === Category.DINING ? [
-      { id: 'f1', name: '김밥', description: '검정김에말린', icon: '🍱' },
-      { id: 'f2', name: '냉면', description: '시원한여름면', icon: '🍜' },
-      { id: 'f3', name: '떡볶이', description: '빨갛고매운맛', icon: '🥘' },
-      { id: 'f4', name: '불고기', description: '양념된고기요리', icon: '🥩' },
-      { id: 'f5', name: '파전', description: '한국식피자파전', icon: '🥞' },
-      { id: 'f6', name: '삼계탕', description: '든든한보양식', icon: '🥣' },
-      { id: 'f7', name: '김치찌개', description: '얼큰한뚝배기', icon: '🍲' },
-      { id: 'f8', name: '비빔밥', description: '건강한채소밥', icon: '🥗' },
-      { id: 'f9', name: '잡채', description: '맛있는당면', icon: '🍝' }
-    ] : Array.from({ length: itemCount }, (_, i) => ({
-      id: `item-${i}`,
-      name: `${category} 물건 ${i + 1}`,
-      description: "신선함",
-      icon: "📦"
-    }));
-
+    // Fallback logic remains for reliability
     return {
-      theme: `${category} 한 상`,
-      items: fallbackItems.slice(0, itemCount),
+      theme: `${category} 장보기`,
+      items: Array.from({ length: itemCount }, (_, i) => ({
+        id: `item-${randomFactor}-${i}`,
+        name: `${category} 품목 ${i + 1}`,
+        description: "신선함",
+        icon: "📦"
+      })),
       decoys: Array.from({ length: decoyCount }, (_, i) => ({
-        id: `decoy-${i}`,
-        name: `다른 메뉴 ${i + 1}`,
-        description: "맛있는것",
+        id: `decoy-${randomFactor}-${i}`,
+        name: `다른 품목 ${i + 1}`,
+        description: "관련상품",
         icon: "❓"
       }))
     };

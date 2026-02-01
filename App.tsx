@@ -292,6 +292,7 @@ const App: React.FC = () => {
       case Category.CLEANING: return '🧹';
       case Category.TRAVEL: return '✈️';
       case Category.DINING: return '🍱';
+      case Category.COSMETICS: return '💄';
       default: return '🛍️';
     }
   };
@@ -609,15 +610,15 @@ const App: React.FC = () => {
         )}
 
         {gameState === GameState.RESULT && scenario && (
-          <div className="flex-1 flex flex-col items-center justify-center animate-fadeIn text-center p-4">
-            <div className="mb-10">
-              <div className="text-[10rem] leading-none mb-8 drop-shadow-2xl">
+          <div className="flex-1 flex flex-col items-center justify-center animate-fadeIn text-center py-2 px-4 max-w-3xl mx-auto">
+            <div className="mb-4">
+              <div className="text-7xl leading-none mb-4 drop-shadow-xl">
                 {score === scenario.items.length ? '👑' : score >= (scenario.items.length / 2) ? '😊' : '💪'}
               </div>
-              <h2 className="text-6xl font-black text-white mb-6">
+              <h2 className="text-4xl font-black text-white mb-2">
                 총 {score}개 정답!
               </h2>
-              <p className="text-3xl text-slate-300 font-black max-w-2xl leading-relaxed">
+              <p className="text-xl text-slate-300 font-black leading-snug whitespace-pre-line">
                 {score === scenario.items.length 
                   ? '와아! 완벽한 기억력입니다!\n우리 동네 최고의 기억력 박사님!' 
                   : score >= (scenario.items.length / 2) 
@@ -626,20 +627,20 @@ const App: React.FC = () => {
               </p>
             </div>
 
-            <div className="w-full bg-slate-950/70 rounded-[2.5rem] p-8 mb-12 border-4 border-slate-800 shadow-2xl">
-              <h3 className="text-2xl font-black text-slate-200 mb-8 border-b-4 border-yellow-700 inline-block px-6 pb-2">영수증 확인</h3>
-              <div className="flex flex-wrap justify-center gap-6">
+            <div className="w-full bg-slate-950/70 rounded-[1.5rem] p-4 mb-6 border-2 border-slate-800 shadow-xl overflow-hidden">
+              <h3 className="text-xl font-black text-slate-200 mb-4 border-b-2 border-yellow-700 inline-block px-4 pb-1">영수증 확인</h3>
+              <div className="flex flex-wrap justify-center gap-3">
                 {scenario.items.map((item, idx) => (
-                  <div key={`res-${idx}`} className="flex flex-col items-center bg-slate-800 p-5 rounded-[2rem] shadow-xl border-2 border-slate-700 w-36 relative overflow-hidden">
-                    <div className="absolute top-0 left-0 w-full h-2 bg-emerald-700"></div>
-                    <span className="text-sm font-black bg-slate-900 text-slate-400 px-3 py-1 rounded-full mb-3">{idx + 1}번</span>
-                    <span className="text-6xl mb-3 drop-shadow-md">{item.icon}</span>
-                    <span className="text-lg font-black text-white mb-4 text-center">{item.name}</span>
-                    <div className="text-5xl">
+                  <div key={`res-${idx}`} className="flex flex-col items-center bg-slate-800 p-3 rounded-[1rem] shadow-md border border-slate-700 w-24 relative overflow-hidden">
+                    <div className="absolute top-0 left-0 w-full h-1 bg-emerald-700"></div>
+                    <span className="text-[10px] font-black bg-slate-900 text-slate-400 px-2 py-0.5 rounded-full mb-1">{idx + 1}번</span>
+                    <span className="text-3xl mb-1 drop-shadow-sm">{item.icon}</span>
+                    <span className="text-[11px] font-black text-white mb-1 text-center truncate w-full">{item.name}</span>
+                    <div className="text-xl">
                       {userAnswers[idx]?.id === item.id ? (
-                        <span className="text-emerald-400 font-black drop-shadow-[0_0_10px_rgba(52,211,153,0.5)]">⭕</span>
+                        <span className="text-emerald-400 font-black drop-shadow-[0_0_5px_rgba(52,211,153,0.5)]">⭕</span>
                       ) : (
-                        <span className="text-red-500 font-black drop-shadow-[0_0_10px_rgba(239,68,68,0.5)]">❌</span>
+                        <span className="text-red-500 font-black drop-shadow-[0_0_5px_rgba(239,68,68,0.5)]">❌</span>
                       )}
                     </div>
                   </div>
@@ -647,16 +648,16 @@ const App: React.FC = () => {
               </div>
             </div>
 
-            <div className="flex flex-wrap gap-8 justify-center">
+            <div className="flex flex-wrap gap-4 justify-center">
               <button
                 onClick={startGame}
-                className="px-14 py-8 bg-emerald-700 text-white text-3xl font-black rounded-full shadow-[0_8px_0_rgb(6,95,70)] hover:bg-emerald-800 transition-all active:shadow-none active:translate-y-1"
+                className="px-8 py-4 bg-emerald-700 text-white text-xl font-black rounded-full shadow-[0_4px_0_rgb(6,95,70)] hover:bg-emerald-800 transition-all active:shadow-none active:translate-y-1"
               >
                 🔄 다시하기
               </button>
               <button
                 onClick={goHome}
-                className="px-14 py-8 bg-slate-700 text-white text-3xl font-black rounded-full shadow-[0_8px_0_rgb(51,65,85)] hover:bg-slate-600 transition-all active:shadow-none active:translate-y-1"
+                className="px-8 py-4 bg-slate-700 text-white text-xl font-black rounded-full shadow-[0_4px_0_rgb(51,65,85)] hover:bg-slate-600 transition-all active:shadow-none active:translate-y-1"
               >
                 ⚙️ 레벨변경
               </button>

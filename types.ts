@@ -13,7 +13,8 @@ export enum Category {
   CLOTHING = '옷사기',
   CLEANING = '청소 & 빨래',
   TRAVEL = '여행가기',
-  DINING = '식사하기'
+  DINING = '식사하기',
+  COSMETICS = '화장품사기'
 }
 
 export interface GameItem {
